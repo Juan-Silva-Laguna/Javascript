@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #resultado{
+            background-color: rgba(174, 183, 183, 0.514);
+            width: 125px;
+            height: 18px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 8px;
+            padding: 5px;
+        }
+
+        button{
+            margin-bottom: 5px;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button onclick="asignaValor(0)">0</button>
+        <button onclick="asignaValor(1)">1</button>
+        <button onclick="asignaValor(2)">2</button>
+        <button onclick="asignaValor(3)">3</button>
+        <button onclick="asignaValor(4)">4</button>
+        <button onclick="asignaValor(5)">5</button>
+        <button onclick="asignaValor(6)">6</button>
+        <button onclick="asignaValor(7)">7</button>
+        <button onclick="asignaValor(8)">8</button>
+        <button onclick="asignaValor(9)">9</button>
+        <button onclick="quitarValor()"><</button>
+        <br><br>
+        <button onclick="asignarOperacion('+')">+</button>
+        <button onclick="asignarOperacion('-')">-</button>
+        <button onclick="asignarOperacion('x')">x</button>
+        <button onclick="asignarOperacion('/')">/</button>
+        <br><br>
+        <button onclick="hacerOperacion()">=</button>
+        <br><br>
+        
+        <div id="resultado">
+            0
+        </div>
+    </div>
+    <script>
+        let valor1 = '';
+        let valor2 = '';
+        let resultado = 0;
+        let operacion = '';
+        let texto_resultado = '';
+
+        function asignaValor(val){
+            if (operacion == '') {
+                valor1 += val
+            }else{
+                valor2 += val
+            }
+            texto_resultado += val
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+
+        function asignarOperacion(val) {
+            
+            if (operacion == '') {
+                operacion = val
+                texto_resultado += val
+                document.getElementById('resultado').innerText = texto_resultado
+            }else{
+                resultado = obtenerResultado(valor1, valor2, operacion);
+                valor1 = resultado.toString()
+                valor2 = ''
+                operacion = val
+                texto_resultado = resultado + val
+                document.getElementById('resultado').innerText = texto_resultado
+            }
+        }
+
+        function hacerOperacion() {
+            resultado = obtenerResultado(valor1, valor2, operacion);
+            texto_resultado += "="+resultado
+            valor1 = resultado.toString()
+            valor2 = ''
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+
+        function obtenerResultado(v1, v2, o) {
+            v1 = Number(v1)
+            v2 = Number(v2)
+            let r = 0;
+            switch (o) {
+                case "+":
+                    r = v1+v2
+                    break;
+                case "-":
+                    r = v1-v2
+                    break;
+                case "x":
+                    r = v1*v2
+                    break;
+                case "/":
+                    r = v1/v2
+                    break;
+            }
+            return r
+        }
+
+        function quitarValor(){
+            let esOper = texto_resultado.substring(texto_resultado.length -1, texto_resultado.length)
+            if (esOper == "+" || esOper == "+" || esOper == "x" || esOper == "/") {
+                return;
+            }
+            if (operacion == '') {
+                valor1 = valor1.substring(0, valor1.length -1)
+                texto_resultado = valor1
+            }else{
+                valor2 = valor2.substring(0, valor2.length -1)
+                texto_resultado = texto_resultado.substring(0, texto_resultado.length -1)
+            }
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+    </script>
+</body>
+</html>

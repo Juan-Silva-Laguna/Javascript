@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacman</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #000;
+            color: white;
+        }
+
+        h1,
+        p {
+            margin: 20px;
+        }
+
+        #game-container {
+            position: relative;
+            margin: 20px auto;
+            width: 400px;
+            height: 400px;
+            background-color: #000;
+            border: 10px solid #fff;
+        }
+
+        #pacman {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: yellow;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        .ghost {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        #points {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Recolector Juego</h1>
+    <p>Puntos recolectados: <span id="score">0</span></p>
+    <div id="game-container">
+        <div id="pacman"></div>
+        <div id="ghost" class="ghost"></div>
+        <div id="points"></div>
+    </div>
+    <script>
+        // Variables para controlar el movimiento de Pac-Man
+        let pacman = document.getElementById('pacman');
+        let container = document.getElementById('game-container');
+        let ghost = document.getElementById('ghost');
+        let pointsContainer = document.getElementById('points');
+        let scoreDisplay = document.getElementById('score');
+
+        let pacmanX = 0;
+        let pacmanY = 0;
+        let velocity = 5; // Velocidad de Pac-Man
+        let direction = ''; // Dirección actual
+        let score = 0; // Puntaje
+
+        // Puntos y fantasmas
+        let points = [];
+        let ghostX = 200;
+        let ghostY = 200;
+        let ghostDirectionX = 1;
+        let ghostDirectionY = 1;
+
+        // Crear puntos en posiciones aleatorias
+        function createPoints(numPoints) {
+            for (let i = 0; i < numPoints; i++) {
+                let point = document.createElement('div');
+                point.classList.add('point');
+                let x = Math.floor(Math.random() * (container.clientWidth - 10));
+                let y = Math.floor(Math.random() * (container.clientHeight - 10));
+                point.style.left = x + 'px';
+                point.style.top = y + 'px';
+                points.push({ element: point, x: x, y: y });
+                pointsContainer.appendChild(point);
+            }
+        }
+
+        // Mover Pac-Man con las teclas de flechas
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                    direction = 'up';
+                    break;
+                case 'ArrowDown':
+                    direction = 'down';
+                    break;
+                case 'ArrowLeft':
+                    direction = 'left';
+                    break;
+                case 'ArrowRight':
+                    direction = 'right';
+                    break;
+            }
+        });
+
+        // Función para actualizar la posición de Pac-Man
+        function movePacman() {
+            let containerWidth = container.clientWidth;
+            let containerHeight = container.clientHeight;
+            let pacmanWidth = pacman.clientWidth;
+            let pacmanHeight = pacman.clientHeight;
+
+            switch (direction) {
+                case 'up':
+                    if (pacmanY > 0) pacmanY -= velocity;
+                    break;
+                case 'down':
+                    if (pacmanY < containerHeight - pacmanHeight) pacmanY += velocity;
+                    break;
+                case 'left':
+                    if (pacmanX > 0) pacmanX -= velocity;
+                    pacman.style.transform = 'rotate(180deg)';
+                    break;
+                case 'right':
+                    if (pacmanX < containerWidth - pacmanWidth) pacmanX += velocity;
+                    pacman.style.transform = 'rotate(0deg)';
+                    break;
+            }
+
+            pacman.style.top = pacmanY + 'px';
+            pacman.style.left = pacmanX + 'px';
+
+            checkCollisions();
+            requestAnimationFrame(movePacman);
+        }
+
+        // Mover el fantasma automáticamente
+        function moveGhost() {
+            ghostX += ghostDirectionX * 2;
+            ghostY += ghostDirectionY * 2;
+
+            if (ghostX <= 0 || ghostX >= container.clientWidth - ghost.clientWidth) {
+                ghostDirectionX *= -1;
+            }
+            if (ghostY <= 0 || ghostY >= container.clientHeight - ghost.clientHeight) {
+                ghostDirectionY *= -1;
+            }
+
+            ghost.style.top = ghostY + 'px';
+            ghost.style.left = ghostX + 'px';
+
+            requestAnimationFrame(moveGhost);
+        }
+
+        // Verificar colisiones con puntos y fantasmas
+        function checkCollisions() {
+            // Colisiones con puntos
+            points.forEach((point, index) => {
+                if (
+                    pacmanX < point.x + 10 &&
+                    pacmanX + 40 > point.x &&
+                    pacmanY < point.y + 10 &&
+                    pacmanY + 40 > point.y
+                ) {
+                    point.element.remove(); // Eliminar el punto del DOM
+                    points.splice(index, 1); // Eliminar del array
+                    score++;
+                    scoreDisplay.textContent = score;
+                    if (score == 10) {
+                        alert('Lo lograste, juega nuevamente!')
+                        location.reload()
+                    }
+                }
+            });
+
+            // Colisión con el fantasma
+            if (
+                pacmanX < ghostX + 40 &&
+                pacmanX + 40 > ghostX &&
+                pacmanY < ghostY + 40 &&
+                pacmanY + 40 > ghostY
+            ) {
+                console.log(1);
+                pacmanX = -100
+                alert('¡Te atrapó el fantasma! Fin del juego.');
+                window.location.reload()
+
+                return;
+            }
+        }
+
+        // Iniciar el juego
+        createPoints(10);
+        movePacman();
+        moveGhost();
+
+    </script>
+</body>
+
+</html>

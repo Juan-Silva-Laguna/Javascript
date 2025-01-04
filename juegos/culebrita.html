@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de la Culebrita</title>
+    <style>
+        #gameArea {
+            width: 400px;
+            height: 400px;
+            background-color: #000;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .snake {
+            width: 20px;
+            height: 20px;
+            background-color: limegreen;
+            position: absolute;
+        }
+
+        .food {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br><br>
+    <center>
+        <h1>PUNTOS <span id="points">0</span></h1>
+    </center>
+    <br><br><br>
+    <div id="gameArea"></div>
+    <script>
+        // Variables del juego
+        const gameArea = document.getElementById('gameArea');
+        const blockSize = 20;
+        const areaWidth = gameArea.clientWidth / blockSize;
+        const areaHeight = gameArea.clientHeight / blockSize;
+        let snake = [{ x: 10, y: 10 }]; // Culebrita inicial (posición)
+        let food = generateFood(); // Generar la comida al iniciar el juego
+        let direction = { x: 0, y: 0 }; // Dirección inicial
+        let gameInterval;
+
+        // Dibujar culebrita
+        function drawSnake() {
+            // Solo limpia los segmentos de la culebra
+            const snakeElements = document.querySelectorAll('.snake');
+            snakeElements.forEach(el => el.remove());
+
+            snake.forEach(segment => {
+                const snakeElement = document.createElement('div');
+                snakeElement.style.left = segment.x * blockSize + 'px';
+                snakeElement.style.top = segment.y * blockSize + 'px';
+                snakeElement.classList.add('snake');
+                gameArea.appendChild(snakeElement);
+            });
+        }
+
+        // Generar comida en una posición aleatoria
+        function generateFood() {
+            const foodPosition = {
+                x: Math.floor(Math.random() * areaWidth),
+                y: Math.floor(Math.random() * areaHeight)
+            };
+
+            // Eliminar la comida anterior si existe
+            let existingFood = document.querySelector('.food');
+            if (existingFood) {
+                existingFood.remove();
+            }
+
+            // Dibujar la nueva comida
+            const foodElement = document.createElement('div');
+            foodElement.style.left = foodPosition.x * blockSize + 'px';
+            foodElement.style.top = foodPosition.y * blockSize + 'px';
+            foodElement.classList.add('food');
+            gameArea.appendChild(foodElement);
+
+            return foodPosition;
+        }
+
+        // Mover la culebrita
+        function moveSnake() {
+            const newHead = {
+                x: snake[0].x + direction.x,
+                y: snake[0].y + direction.y
+            };
+
+            // Verificar si ha comido la comida
+            if (newHead.x === food.x && newHead.y === food.y) {
+                // Genera nueva comida y la culebrita crece
+                food = generateFood();
+                let p = document.getElementById('points').innerHTML
+                document.getElementById('points').innerHTML = Number(p) + 1
+            } else {
+                snake.pop(); // Elimina el último segmento si no ha comido
+            }
+
+            // Agregar nueva cabeza al inicio
+            snake.unshift(newHead);
+
+            // Verificar colisiones
+            if (newHead.x < 0 || newHead.x >= areaWidth || newHead.y < 0 || newHead.y >= areaHeight || colision()) {
+                clearInterval(gameInterval); // Detener el juego si hay colisión
+                alert('¡Juego terminado!');
+            }
+        }
+
+        // Verificar colisión con sí mismo
+        function colision() {
+            return snake.slice(1).some(segment => segment.x === snake[0].x && segment.y === snake[0].y);
+        }
+
+        // Controlar la dirección de la culebra
+        window.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (direction.y === 0) direction = { x: 0, y: -1 };
+                    break;
+                case 'ArrowDown':
+                    if (direction.y === 0) direction = { x: 0, y: 1 };
+                    break;
+                case 'ArrowLeft':
+                    if (direction.x === 0) direction = { x: -1, y: 0 };
+                    break;
+                case 'ArrowRight':
+                    if (direction.x === 0) direction = { x: 1, y: 0 };
+                    break;
+            }
+        });
+
+        // Iniciar el juego
+        function startGame() {
+            gameInterval = setInterval(() => {
+                moveSnake();
+                drawSnake();
+            }, 100); // Velocidad del juego
+        }
+
+        startGame();
+
+    </script>
+</body>
+
+</html>

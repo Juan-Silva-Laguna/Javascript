@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Juego</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            /* max-width: 1000px; */
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .game-info {
+            padding: 10px;
+            background-color: #f7f7f7;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .game-info h2 {
+            font-size: 1.5rem;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Selecciona un Juego</h1>
+        <div class="game-grid">
+            <div class="game-card">
+                <a href="./tetris.html">
+                    <img src="./imagenes/tetris.jpeg" alt="Tetris">
+                    <div class="game-info">
+                        <h2>Tetris</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="game-card">
+                <a href="./recolector.html">
+                    <img src="./imagenes/pacman.jpeg" alt="Pacman">
+                    <div class="game-info">
+                        <h2>Recolector</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="game-card">
+                <a href="./pong.html">
+                    <img src="./imagenes/pong.jpeg" alt="Pong">
+                    <div class="game-info">
+                        <h2>Pong</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="game-card">
+                <a href="./rompe_ladrillos.html">
+                    <img src="./imagenes/ladrillos.jpeg" alt="Rompe Ladrillos">
+                    <div class="game-info">
+                        <h2>Rompe Ladrillos</h2>
+                    </div>
+                </a>
+            </div>
+
+            <div class="game-card">
+                <a href="./culebrita.html">
+                    <img src="./imagenes/culebra.jpeg" alt="Culebrita">
+                    <div class="game-info">
+                        <h2>Culebrita</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

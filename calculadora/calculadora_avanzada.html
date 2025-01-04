@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALCULADORA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        #resultado{
+            background-color: rgba(205, 211, 211, 0.511);
+            width: 100%;
+            height: 50px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 18px;
+            padding: 5px;
+            font-weight: bold;
+
+        }
+
+        button{
+            margin-bottom: 5px;
+            width: 100% ;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>CALCULADORA</h1>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 card p-3">
+                <div id="resultado">
+                    0
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(1)"><i class="fa-solid fa-1"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(2)"><i class="fa-solid fa-2"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(3)"><i class="fa-solid fa-3"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignarOperacion('+')"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(4)"><i class="fa-solid fa-4"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(5)"><i class="fa-solid fa-5"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(6)"><i class="fa-solid fa-6"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignarOperacion('-')"><i class="fa-solid fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(7)"><i class="fa-solid fa-7"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(8)"><i class="fa-solid fa-8"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(9)"><i class="fa-solid fa-9"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignarOperacion('x')"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="hacerOperacion()"><i class="fa-solid fa-equals"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignaValor(0)"><i class="fa-solid fa-0"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="quitarValor()"><i class="fa-solid fa-delete-left"></i></button>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-outline-dark" onclick="asignarOperacion('/')"><i class="fa-solid fa-divide"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        let valor1 = '';
+        let valor2 = '';
+        let resultado = 0;
+        let operacion = '';
+        let texto_resultado = '';
+
+
+        let elem = document.getElementsByTagName('body')[0];
+
+        elem.addEventListener("keydown", function (event) {
+            // El parámetro del evento es del tipo KeyboardEvent
+            console.log(event);
+
+            switch (event.key) {
+                case '0':
+                    asignaValor(0)
+                    break;
+                case '1':
+                    asignaValor(1)
+                    break;
+                case '2':
+                    asignaValor(2)
+                    break;
+                case '3':
+                    asignaValor(3)
+                    break;
+                case '4':
+                    asignaValor(4)
+                    break;
+                case '5':
+                    asignaValor(5)
+                    break;
+                case '6':
+                    asignaValor(6)
+                    break;
+                case '7':
+                    asignaValor(7)
+                    break;
+                case '8':
+                    asignaValor(5)
+                    break;
+                case '9':
+                    asignaValor(6)
+                    break;
+                case '+':
+                    asignarOperacion('+')
+                    break;
+                case 'x':
+                    asignarOperacion('x')
+                    break;
+                case '-':
+                    asignarOperacion('-')
+                    break;
+                case '/':
+                    asignarOperacion('/')
+                    break;
+                case '*':
+                    asignarOperacion('x')
+                    break;
+                case '=':
+                    hacerOperacion()
+                    break;
+                case 'Enter':
+                    hacerOperacion()
+                    break;
+                case 'Backspace':
+                    quitarValor()
+                    break;
+            }
+        });
+
+
+        function asignaValor(val){
+            if (operacion == '') {
+                valor1 += val
+            }else{
+                valor2 += val
+            }
+            texto_resultado += val
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+
+        function asignarOperacion(val) {
+            
+            if (operacion == '') {
+                operacion = val
+                texto_resultado += val
+                document.getElementById('resultado').innerText = texto_resultado
+            }else{
+                resultado = obtenerResultado(valor1, valor2, operacion);
+                valor1 = resultado.toString()
+                valor2 = ''
+                operacion = val
+                texto_resultado = resultado + val
+                document.getElementById('resultado').innerText = texto_resultado
+            }
+        }
+
+        function hacerOperacion() {
+            resultado = obtenerResultado(valor1, valor2, operacion);
+            texto_resultado += "="+resultado
+            valor1 = resultado.toString()
+            valor2 = ''
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+
+        function obtenerResultado(v1, v2, o) {
+            v1 = Number(v1)
+            v2 = Number(v2)
+            let r = 0;
+            switch (o) {
+                case "+":
+                    r = v1+v2
+                    break;
+                case "-":
+                    r = v1-v2
+                    break;
+                case "x":
+                    r = v1*v2
+                    break;
+                case "/":
+                    r = v1/v2
+                    break;
+            }
+            return r
+        }
+
+        function quitarValor(){
+            let esOper = texto_resultado.substring(texto_resultado.length -1, texto_resultado.length)
+            if (esOper == "+" || esOper == "+" || esOper == "x" || esOper == "/") {
+                return;
+            }
+            if (operacion == '') {
+                valor1 = valor1.substring(0, valor1.length -1)
+                texto_resultado = valor1
+            }else{
+                valor2 = valor2.substring(0, valor2.length -1)
+                texto_resultado = texto_resultado.substring(0, texto_resultado.length -1)
+            }
+            document.getElementById('resultado').innerText = texto_resultado
+        }
+    </script>
+</body>
+</html>

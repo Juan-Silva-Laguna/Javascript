@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Días de Viaje</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Estilo del formulario en dos columnas */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-grid label {
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-grid input,
+        .form-grid select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Estilos generales */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Estilos para las tarjetas (cards) */
+        .card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: inline-block;
+            width: 250px;
+            margin: 10px;
+            vertical-align: top;
+        }
+
+        .card button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #horario {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #agenda {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #agenda {
+            position: relative;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin: 20px;
+        }
+        
+        #copiarBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            padding: 5px 10px;
+            background-color: #bebfc0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #copiarBtn:hover {
+            background-color: #979fa8;
+        }
+        
+        /* Centrar y dar estilos al contenedor del select y botón */
+        #mesAgendaContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Estilo del select */
+        #mes {
+            width: 200px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            background-color: #f0f0f5;
+            color: #333;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        #mes:hover {
+            background-color: #e0e0e5;
+            border-color: #06407eb7;
+        }
+
+        /* Estilo del botón */
+        #btnAgenda {
+            width: 400px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        #btnAgenda:hover {
+            background-color: #07407caf;
+        }
+
+        /* Estilos generales para el contenedor */
+.container_fecha {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el label */
+.container_fecha .label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Estilos para el input de fecha */
+.container_fecha .input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Estilos para el input de fecha en foco */
+.container_fecha .input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+    </style>
+</head>
+<body>
+    <form id="formulario">
+        <h2>Formulario de Viaje</h2>
+        <div class="form-grid">
+            <div>
+                <label for="tecnico">Programa de Formación:</label>
+                <input type="text" id="tecnico" placeholder="Ej: Programación de Software">
+            </div>
+            <div>
+                <label for="ficha">Ficha:</label>
+                <input type="number" id="ficha" placeholder="Ej: 2707743">
+            </div>
+            <div>
+                <label for="dia">Día:</label>
+                <br>
+                <select id="dia">
+                    <option value="1">Lunes</option>
+                    <option value="2">Martes</option>
+                    <option value="3">Miércoles</option>
+                    <option value="4">Jueves</option>
+                    <option value="5">Viernes</option>
+                    <option value="6">Sábado</option>
+                    <option value="7">Domingo</option>
+                </select>
+            </div>
+            <div>
+                <label for="partida">Ciudad Partida:</label>
+                <input type="text" id="partida" placeholder="Ej: Neiva" value="Neiva">
+            </div>
+            <div>
+                <label for="destino">Ciudad Destino:</label>
+                <input type="text" id="destino" placeholder="Ej: Teruel">
+            </div>
+            <div>
+                <label for="valor">Valor:</label>
+                <input type="number" id="valor" placeholder="Ej: 14000">
+            </div>
+        </div>
+        <br>
+        <button type="button" id="agregarBtn">AGREGAR</button>
+    </form>
+
+    <div id="horario"></div>
+    <div id="mesAgendaContainer" style="display: none;">
+        <select id="mes">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+
+        <div class="container_fecha">
+            <label for="festivo" class="label">Días a No Tener en Cuenta: (festivo, cívicos, no laborados)</label>
+            <input type="date" id="festivo" class="input">
+        </div>
+        
+
+        <div id="festivos"></div>
+        <br>
+        <button onclick="generarAgenda()" id="btnAgenda">Generar Agenda Actividades</button>
+        <br>        
+        <div id="agenda" style="display: none;">
+            <button id="copiarBtn">Copiar</button>
+
+            <p id="agenda_texto"></p>
+            <div id="total"></div>
+            <div id="subtotal"></div>
+        </div>
+    </div>
+
+
+    <script>
+        // Seleccionamos el botón y el contenedor
+    const botonCopiar = document.getElementById('copiarBtn');
+
+    // Función para copiar el contenido del div al portapapeles
+    function copiarContenido() {
+        // Creamos un elemento textarea temporal
+        const textarea = document.createElement('textarea');
+        textarea.value = document.getElementById('agenda_texto').innerText; // Usamos innerText para obtener el contenido visible
+        document.body.appendChild(textarea);
+        textarea.select(); // Seleccionamos el texto
+        document.execCommand('copy'); // Copiamos el texto al portapapeles
+        document.body.removeChild(textarea); // Eliminamos el textarea temporal
+        alert('Contenido copiado al portapapeles!');
+    }
+
+    // Asociamos la función al evento click del botón
+    botonCopiar.addEventListener('click', copiarContenido);
+
+
+
+
+        // Seleccionamos los elementos necesarios
+        const inputFecha = document.getElementById('festivo');
+        const contenedorFestivos = document.getElementById('festivos');
+        let dias_festivos = [];
+        // Función que agrega una tarjeta con la fecha seleccionada
+        function agregarFecha() {
+            const fechaSeleccionada = inputFecha.value;
+            if (!fechaSeleccionada) return; // Si no hay fecha, no hacemos nada
+            dias_festivos.push(fechaSeleccionada);
+            // Crear un div para la tarjeta
+            const card = document.createElement('div');
+            card.style.border = '1px solid #ccc';
+            card.style.padding = '10px';
+            card.style.margin = '10px';
+            card.style.display = 'inline-block';
+
+            // Crear un span para mostrar la fecha
+            const spanFecha = document.createElement('span');
+            spanFecha.textContent = fechaSeleccionada;
+
+            // Crear un botón para eliminar la tarjeta
+            const botonEliminar = document.createElement('input');
+            botonEliminar.value = 'X';
+            botonEliminar.type = 'button';
+            botonEliminar.style.marginLeft = '10px';
+            botonEliminar.onclick = () => {
+            card.remove(); // Eliminar la tarjeta cuando se haga clic en el botón
+            };
+
+            // Añadir el span y el botón al div de la tarjeta
+            card.appendChild(spanFecha);
+            card.appendChild(botonEliminar);
+
+            // Añadir la tarjeta al contenedor
+            contenedorFestivos.appendChild(card);
+
+            // Limpiar el input de fecha
+            inputFecha.value = '';
+        }
+
+        // Escuchar el evento de cambio en el input de fecha
+        inputFecha.addEventListener('change', agregarFecha);
+
+
+
+        const selectMes = document.getElementById('mes');
+        const mesActual = new Date().getMonth(); // Obtiene el mes actual (0 para enero, 11 para diciembre)
+        selectMes.value = mesActual+1;
+
+        function generarAgenda() {
+            document.getElementById('agenda').style.display = 'block';
+            const items = JSON.parse(localStorage.getItem('viajes')) || [];
+            const fechaActual = new Date();
+            const añoActual = fechaActual.getFullYear();
+            let mes_val = document.getElementById('mes').value;
+            let agenda = [];
+            
+            
+            items.forEach(item => {
+                let dias = obtenerDiasDeMes(añoActual, mes_val, item);
+                agenda.push(dias)
+            });
+            let arregloUnido = agenda.flat();
+            let texto = '';
+            let suma = 0;
+            arregloUnido.sort((a, b) => a.dia - b.dia);
+
+            let ciudades = [];
+            let subtotales = [];
+
+            arregloUnido.forEach((val, i) => {
+                if (ciudades.length > 0 ) {
+                    let existe = ciudades.find(ciudad => ciudad.destino == val.destino)
+                    if (existe) {
+                        existe.total += Number(val.valor);
+                    }else{
+                        ciudades.push({destino: val.destino, total: Number(val.valor)})
+                    }
+                }else{
+                    ciudades.push({destino: val.destino, total: Number(val.valor)})
+                }
+                
+                
+                suma += Number(val.valor);
+                texto += `
+                    Día ${i+1}: ${val.dia}/${val.mes}/${val.año} <br>
+                    Desplazamientos ruta de ida: ${val.partida}_${val.destino} <br>
+                    Medio de transporte: Terrestre <br>
+                    Actividades a ejecutar: Orientar formación Titulada en ${val.tecnico}, identificado con la ficha ${val.ficha}. <br>
+                    Desplazamientos Ruta de regreso: ${val.destino}_${val.partida} <br>
+                    Medio de transporte: Terrestre <br>
+                    <br>
+                `;
+            });
+            document.getElementById('total').innerText = 'VALOR TOTAL ORDE DE VIAJE: $'+(suma*2);
+            document.getElementById('agenda_texto').innerHTML = texto;
+            let c = '';
+            ciudades.forEach(ciudad => {
+                c += `
+                <p>Total ${ciudad.destino}: $ ${ciudad.total*2}</p>
+                `;
+            });
+            document.getElementById('subtotal').innerHTML = c;
+
+
+        }
+
+        function obtenerDiasDeMes(año, mes, datos) {
+            let dias = [];
+            
+            // Crear una fecha para el primer día del mes
+            let fecha = new Date(año, mes - 1, 1);
+            
+            // Obtener el último día del mes
+            let ultimoDiaMes = new Date(año, mes, 0).getDate();
+            // Iterar sobre todos los días del mes
+            
+            for (let dia = 1; dia <= ultimoDiaMes; dia++) {
+                fecha.setDate(dia); // Cambiar el día en el objeto de fecha
+                // Comprobar si es dias (5 en JavaScript, donde los días van de 0 a 6)
+                
+                if (fecha.getDay() == datos.dia_val) {
+                    const existe = dias_festivos.includes(`${año}-${agregarCero(mes)}-${agregarCero(fecha.getDate())}`);
+                    if (!existe) {
+                        dias.push({
+                            dia: fecha.getDate(),
+                            mes: mes,
+                            año: año,
+                            tecnico: datos.tecnico,
+                            partida: datos.partida,
+                            destino: datos.destino,
+                            ficha: datos.ficha,
+                            valor: datos.valor,
+                        }); // Añadir solo el número del día
+                    }
+                }
+            }
+
+            return dias;
+        }
+
+        function agregarCero(num) {
+            // Convertimos el número a una cadena para facilitar la comprobación de su longitud
+            const numStr = num.toString();
+
+            // Verificamos si el número tiene una sola cifra
+            if (numStr.length === 1) {
+                // Si tiene una sola cifra, agregamos un cero delante
+                return '0' + numStr;
+            }
+
+            // Si el número ya tiene dos cifras o más, lo retornamos tal cual
+            return numStr;
+        }
+        // Función para cargar datos desde el LocalStorage y mostrar las tarjetas
+        function cargarDatos() {
+            const items = JSON.parse(localStorage.getItem('viajes')) || [];
+            
+            items.forEach(item => agregarCard(item, false));
+        }
+
+        // Función para agregar tarjetas (cards)
+        function agregarCard(item, guardar = true) {
+
+            const { tecnico, ficha, dia, dia_val, partida, destino, valor } = item;
+
+            // Crear una nueva tarjeta (card)
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <p><strong>Programa de Formación:</strong> ${tecnico}</p>
+                <p><strong>Ficha:</strong> ${ficha}</p>
+                <p><strong>Día:</strong> ${dia}</p>
+                <p><strong>Ciudad de Partida:</strong> ${partida}</p>
+                <p><strong>Ciudad de Destino:</strong> ${destino}</p>
+                <p><strong>Valor:</strong> ${valor}</p>
+                <button class="eliminarBtn">Eliminar</button>
+            `;
+
+            // Agregar la tarjeta al contenedor
+            document.getElementById('horario').appendChild(card);
+
+            // Agregar funcionalidad para eliminar la tarjeta
+            card.querySelector('.eliminarBtn').addEventListener('click', function() {
+                card.remove();
+                eliminarDelStorage(item);
+            });
+
+            // Guardar los datos en LocalStorage si es necesario
+            if (guardar) {
+                guardarEnStorage(item);
+            }
+            document.getElementById('mesAgendaContainer').style.display = "flex"
+
+        }
+
+        // Función para guardar el viaje en LocalStorage
+        function guardarEnStorage(item) {
+            const items = JSON.parse(localStorage.getItem('viajes')) || [];
+            items.push(item);
+            localStorage.setItem('viajes', JSON.stringify(items));
+        }
+
+        // Función para eliminar un viaje del LocalStorage
+        function eliminarDelStorage(item) {
+            let items = JSON.parse(localStorage.getItem('viajes')) || [];
+            items = items.filter(i => !(i.tecnico === item.tecnico && i.ficha === item.ficha && i.dia === item.dia && i.partida === item.partida && i.destino === item.destino && i.valor === item.valor));
+            localStorage.setItem('viajes', JSON.stringify(items));
+        }
+
+        // Evento del botón para agregar una nueva tarjeta
+        document.getElementById('agregarBtn').addEventListener('click', function() {
+            // Obtener los valores del formulario
+            const tecnico = document.getElementById('tecnico').value;
+            const ficha = document.getElementById('ficha').value;
+            const dia = document.getElementById('dia').options[document.getElementById('dia').selectedIndex].text;
+            const dia_val = document.getElementById('dia').value;
+            const partida = document.getElementById('partida').value;
+            const destino = document.getElementById('destino').value;
+            const valor = document.getElementById('valor').value;
+
+            // Crear el objeto del nuevo viaje
+            const nuevoViaje = { tecnico, ficha, dia, dia_val, partida, destino, valor };
+
+            // Agregar la nueva tarjeta y guardar en LocalStorage
+            agregarCard(nuevoViaje);
+
+            // Limpiar el formulario
+            // document.getElementById('formulario').reset();
+        });
+
+        // Cargar las tarjetas desde el LocalStorage al cargar la página
+        window.addEventListener('load', cargarDatos);
+    </script>
+</body>
+</html>
